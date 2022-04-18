@@ -7,4 +7,345 @@ output: pdf_document
 
 ```{r}
 
+##PACKAGES TO INSTALL 
+
+
+install.packages("ggplot2")
+install.packages("dpylr")
+install.packages("lubridate")
+
+## NORTH INLET DATA 
+
+##Code for formatting date and a plot for sensor data in North Inlet
+
+library(ggplot2)
+library(dplyr)
+  
+OL_dat <- read.csv("~/Desktop/OysterLanding_Dat.csv")
+
+OL_dat$Date_Sens <- as.Date(OL_dat$Date_Sens, format = "%m/%d/%y")
+
+ p0 =   ggplot(data=OL_dat, aes(x = Date_Sens, y = ChlFluor)) + geom_point(color= "deeppink2") +           labs(title = "Chlorophyll Sensor in North Inlet", x = "Date", y = "Chl a ug/L")
+ 
+ print(p0)
+
+ 
+ 
+ 
+ 
+## Code for formatting dates and plot for lab data
+library(ggplot2)
+
+
+OL_dat$Date_Lab <- as.Date(OL_dat$Date_Lab, format = "%m/%d/%y")
+
+p =   ggplot(data=OL_dat, aes(x = Date_Lab, y = CHLA_N)) + geom_point(color= "yellowgreen") +           labs(title = "Chlorophyll Lab in North Inlet", x = "Date", y = "Chl a ug/L")
+print(p)
+
+
+## Code for subsetting multiple data series and plotting
+    
+    ## subsetting data
+      ## sensor data subsetted 
+    sensor <- data.frame(OL_dat$Date_Sens, OL_dat$ChlFluor)
+  
+      ## lab data subsetted 
+    Lab <- data.frame(OL_dat$Date_Lab, OL_dat$CHLA_N)
+    
+    
+  ## plotting Sensor data and Lab Data together for 5 year time series (p1)
+    
+p1 = ggplot() + geom_point(data = sensor, aes(x = OL_dat.Date_Sens, y =  OL_dat.ChlFluor, colour = "Sensor")) + geom_point(data = Lab, aes(x = OL_dat.Date_Lab, y = OL_dat.CHLA_N, colour = "Lab")) +  xlab('Dates') + ylab('Chl ug/L') + ggtitle('Sensor vs. Lab Chlorophyll at North Inlet 2017-2021') + scale_colour_manual(values = c("yellowgreen", "deeppink2"))
+  
+print(p1)
+
+
+```
+
+```{r}
+
+ ### Subsetting only 2021 sensor and lab data in North Inlet (Oyster Landing)
+    
+
+  ##sensor
+
+library(dplyr)
+
+OL_dat$Date_Sens <- as.Date(OL_dat$Date_Sens, format = "%m/%d/%y")
+
+OL_dat_yearly <- OL_dat %>% filter(Date_Sens >= as.Date('2021-01-01') & Date_Sens <= as.Date('2021-12-31'))
+
+p2 = ggplot(data=OL_dat_yearly, aes(x = Date_Sens, y = ChlFluor)) + geom_point(color= "deeppink2") + labs(title = "Chlorophyll Sensor in North Inlet 2021", x = "Date", y = "Chl a ug/L")
+
+print(p2)
+
+
+ ##lab 
+
+library(dplyr)
+
+OL_dat$Date_Lab <- as.Date(OL_dat$Date_Lab, format = "%m/%d/%y")
+
+OL_dat_yearly_lab <- OL_dat %>% filter(Date_Lab >= as.Date('2021-01-01') & Date_Lab <= as.Date('2021-12-31'))
+
+
+
+
+## creating new data frames for yearly sensor and lab data in North Inlet (Oyster Landing)
+
+yearly_sens <- data.frame(OL_dat_yearly$Date_Sens, OL_dat_yearly$ChlFluor)
+
+yearly_lab <- data.frame(OL_dat_yearly_lab$Date_Lab, OL_dat_yearly_lab$CHLA_N)
+
+
+
+ ##plotting 2021 sensor and lab data in North Inlet (Oyster Landing)
+
+p3 = ggplot() + geom_point(data = yearly_sens, aes(x = OL_dat_yearly.Date_Sens, y =  OL_dat_yearly.ChlFluor, colour = "Sensor")) + geom_point(data = yearly_lab, aes(x = OL_dat_yearly_lab.Date_Lab, y = OL_dat_yearly_lab.CHLA_N, colour = "Lab")) +  xlab('Dates') +  ylab('Chl ug/L') +  ggtitle('Sensor vs. Lab Chlorophyll at North Inlet 2021') + scale_colour_manual(values = c("yellowgreen", "deeppink2"))
+
+print(p3)
+
+
+
+```
+
+```{r}
+
+### WINYAH BAY
+
+
+##Code for formatting date and a plot for sensor data in Winyah Bay
+library(ggplot2)
+library(dplyr)
+
+ WB_dat <- read.csv("~/Desktop/WinyahBay_dat.csv")
+ 
+ 
+ WB_dat$Date_sens <- as.Date(WB_dat$Date_sens, format = "%m/%d/%y")
+       
+       
+p4 = ggplot(data=WB_dat, aes(x = Date_sens, y = ChlFluor)) + geom_point(color= "purple4") +           labs(title = "Chlorophyll Sensor in Winyah Bay", x = "Dates", y = "Chl a ug/L")
+       
+print(p4)
+
+
+
+
+##Code for formatting date and a plot for lab data in Winyah Bay
+       
+WB_dat$Date_lab <- as.Date(WB_dat$Date_lab, format = "%m/%d/%y")    
+   
+   
+p5 = ggplot(data=WB_dat, aes(x = Date_lab, y = CHLA_N)) + geom_point(color= "yellowgreen") +           labs(title = "Chlorophyll Lab in Winyah Bay", x = "Date", y = "Chl a ug/L")
+
+print(p5)
+
+
+
+
+
+## Code for subsetting multiple data series and plotting
+   
+   
+   
+## subsetting the data
+      #sensor
+              sensor_WB <- data.frame(WB_dat$Date_sens, WB_dat$ChlFluor)
+              
+      #lab
+              lab_WB <- data.frame(WB_dat$Date_lab, WB_dat$CHLA_N)
+
+              
+              
+## plotting Sensor data and Lab Data together for 5 year time series (p6)
+              
+p6 = ggplot() + geom_point(data = sensor_WB, aes(x = WB_dat.Date_sens, y =  WB_dat.ChlFluor, colour = "Sensor")) + geom_point(data = lab_WB, aes(x = WB_dat.Date_lab, y = WB_dat.CHLA_N, colour = "Lab")) +     xlab('Dates') +     ylab('Chl ug/L') +     ggtitle('Sensor vs. Lab Chlorophyll at Winyah Bay 2017-2021') +     scale_colour_manual(values = c("yellowgreen", "purple4"))
+
+print(p6)
+
+```
+
+```{r}
+
+## yearly Data 2021
+
+
+
+library(dplyr)
+
+## Subsetting Winyah Bay Data for 2021
+
+  WB_dat_yearly <- WB_dat %>% filter(Date_sens >= as.Date('2021-01-01') & Date_sens <= as.Date('2021-12-31'))
+  
+  
+WB_dat_yearly_lab <- WB_dat %>% filter(Date_lab >= as.Date('2021-01-01') & Date_lab <= as.Date('2021-12-31'))
+
+
+## creating a new data frame for sensor/lab data in 2021 Winyah Bay
+
+yearly_sens_WB <- data.frame(WB_dat_yearly$Date_sens, WB_dat_yearly$ChlFluor)
+yearly_lab_WB <- data.frame(WB_dat_yearly_lab$Date_lab, WB_dat_yearly_lab$CHLA_N)
+
+
+
+##plotting 2021 sensor and lab data in Winyah Bay (p7)
+
+p7 = ggplot() + geom_point(data = yearly_sens_WB, aes(x = WB_dat_yearly.Date_sens, y =  WB_dat_yearly.ChlFluor, colour = "Sensor")) + geom_point(data = yearly_lab_WB, aes(x = WB_dat_yearly_lab.Date_lab, y = WB_dat_yearly_lab.CHLA_N, colour = "Lab")) + xlab('Dates') + ylab('Chl ug/L') +  ggtitle('Sensor vs. Lab Chlorophyll at Winyah Bay 2021') + scale_colour_manual(values = c("yellowgreen", "purple4"))
+
+print(p7)
+
+
+```
+
+```{r}
+
+## Tidal comparison plots between North Inlet and Winyah Bay
+
+
+
+## spring tidal dates
+
+## formatting for time using Winyah Bay data
+
+install.packages("lubridate")
+
+library(lubridate)
+
+Tidal_dat <- read.csv("~/Desktop/Winyah_Bay_Tidal.csv")
+
+Tidal_dat$sens_dat = mdy_hm(Tidal_dat$DateTimeStamp)
+
+
+
+
+
+## Filtering for chosen dates and creating a new data frame with those dates
+
+WB_tidal_format <- Tidal_dat %>% filter(sens_dat >= as.Date('2021-05-15 00:00:00') & sens_dat <= as.Date('2021-05-18 00:00:00'))
+
+combined_seas_spring_WB <- data.frame(WB_tidal_format$sens_dat, WB_tidal_format$ChlFluor)
+
+
+
+
+
+## formatting for time using North Inlet(Oyster Landing) data
+
+OL_Tidal_dat <- read.csv("~/Desktop/Oyster_Landing_Tidal.csv")
+
+OL_Tidal_dat$sens_dat = mdy_hm(OL_Tidal_dat$Date_sens)
+
+
+
+
+
+## Filtering for chosen dates and creating a new data frame with those dates
+
+OL_tidal_format <- OL_Tidal_dat %>% filter(sens_dat >= as.Date('2021-05-15 00:00:00') & sens_dat <= as.Date('2021-05-18 00:00:00'))
+
+combined_seas_spring_OL <- data.frame(OL_tidal_format$sens_dat, OL_tidal_format$ChlFluor)
+
+
+
+
+
+##plotting spring tidal data for both Winyah Bay and North Inlet(Oyster Landing) (p8)
+
+p8 = ggplot() + geom_point(data = combined_seas_spring_OL, aes(x = OL_tidal_format.sens_dat, y =  OL_tidal_format.ChlFluor, colour = "Oyster Landing")) + geom_point(data = combined_seas_spring_WB, aes(x = WB_tidal_format.sens_dat, y = WB_tidal_format.ChlFluor, colour = "Winyah Bay")) +   xlab('Dates') +     ylab('Chl ug/L') +     ggtitle('Winyah Bay and North Inlet Tidal Spring 2021')+ scale_colour_manual(values = c("deeppink2", "purple4"))
+
+print(p8)
+
+
+
+
+## Summer Tidal Data Visualization :) 
+
+## subsetting the time for new summer dates in Winyah Bay
+
+
+WB_tidal_format_summ <- Tidal_dat %>% filter(sens_dat >= as.Date('2021-08-15 00:00:00') & sens_dat <= as.Date('2021-08-18 00:00:00'))
+
+
+
+
+## creating a new data frame with the subsetted time 
+
+combined_seas_summ_WB <- data.frame(WB_tidal_format_summ$sens_dat, WB_tidal_format_summ$ChlFluor)
+
+
+
+
+
+## subsetting the time for new summer dates in Oyster Landing
+
+OL_tidal_format_summ <- OL_Tidal_dat %>% filter(sens_dat >= as.Date('2021-08-15 00:00:00') & sens_dat <= as.Date('2021-08-18 00:00:00'))
+
+
+
+
+
+## creating a new data frame with the subsetted time
+
+combined_seas_summ_OL <- data.frame(OL_tidal_format_summ$sens_dat, OL_tidal_format_summ$ChlFluor)
+
+
+
+
+
+
+##plotting summer tidal data for both Winyah Bay and North Inlet(Oyster Landing) (p9)
+
+
+p9 = ggplot() + geom_point(data = combined_seas_summ_OL, aes(x = OL_tidal_format_summ.sens_dat, y =  OL_tidal_format_summ.ChlFluor, colour = "Oyster Landing")) + geom_point(data = combined_seas_summ_WB, aes(x = WB_tidal_format_summ.sens_dat, y = WB_tidal_format_summ.ChlFluor, colour = "Winyah Bay")) + xlab('Dates') + ylab('Chl ug/L') +ggtitle('Winyah Bay and North Inlet Tidal Summer 2021') + scale_color_manual(values = c("deeppink2", "purple4"))
+
+print(p9)
+
+
+
+## Winter Tidal Data Visualization :) 
+
+
+
+## subsetting the time for new winter dates in Winyah Bay
+
+WB_tidal_format_wint <- Tidal_dat %>% filter(sens_dat >= as.Date('2021-12-20 00:00:00') & sens_dat <= as.Date('2021-12-23 00:00:00'))
+
+
+
+
+## creating a new data frame with the subsetted time 
+combined_seas_wint_WB <- data.frame(WB_tidal_format_wint$sens_dat, WB_tidal_format_wint$ChlFluor)
+
+
+
+
+## subsetting the time for new winter dates in Oyster Landing 
+
+OL_tidal_format_wint <- OL_Tidal_dat %>% filter(sens_dat >= as.Date('2021-12-20 00:00:00') & sens_dat <= as.Date('2021-12-23 00:00:00'))
+
+
+
+
+## creating a new data frame with the subsetted time
+
+combined_seas_wint_OL <- data.frame(OL_tidal_format_wint$sens_dat, OL_tidal_format_wint$ChlFluor)
+
+
+##plotting winter tidal data for both Winyah Bay and North Inlet(Oyster Landing) (p10)
+ 
+p10 = ggplot() + geom_point(data = combined_seas_wint_OL, aes(x = OL_tidal_format_wint.sens_dat, y =  OL_tidal_format_wint.ChlFluor, colour = "Oyster Landing")) + geom_point(data = combined_seas_wint_WB, aes(x = WB_tidal_format_wint.sens_dat, y = WB_tidal_format_wint.ChlFluor, colour = "Winyah Bay")) + xlab('Dates') + ylab('Chl ug/L') +ggtitle('Winyah Bay and North Inlet Tidal Winter 2021') + scale_color_manual(values = c("deeppink2", "purple4"))
+
+print(p10)
+       
+
+
+
+## All done yay :) <3
+```
+
+
+
+
+
+
 ```
